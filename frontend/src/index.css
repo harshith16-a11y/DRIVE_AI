@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+/* Custom scrollbar for clean tables and modals */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =========================================================================
+   MODERN ANIMATED CAR KEYFRAMES (Wheels, Road, Suspension, Aero, Headlights)
+   ========================================================================= */
+@keyframes wheelSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes roadDashMove {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -72;
+  }
+}
+
+@keyframes aeroWindFlow {
+  0% {
+    stroke-dashoffset: 160;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.65;
+  }
+  100% {
+    stroke-dashoffset: -160;
+    opacity: 0;
+  }
+}
+
+@keyframes carChassisFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+@keyframes headlightPulse {
+  0%, 100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes cityLightPass {
+  0% {
+    transform: translateX(390px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  85% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+}
+
+.car-wheel-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheelSpin 1.15s linear infinite;
+}
+
+.group:hover .car-wheel-spin {
+  animation-duration: 0.42s;
+}
+
+.car-road-scroll {
+  animation: roadDashMove 0.55s linear infinite;
+}
+
+.group:hover .car-road-scroll {
+  animation-duration: 0.24s;
+}
+
+.car-chassis-bounce {
+  animation: carChassisFloat 1.8s ease-in-out infinite;
+}
+
+.group:hover .car-chassis-bounce {
+  animation-duration: 0.9s;
+}
+
+.car-aero-stream {
+  stroke-dasharray: 45 120;
+  animation: aeroWindFlow 1.9s linear infinite;
+}
+
+.group:hover .car-aero-stream {
+  animation-duration: 0.85s;
+}
+
+.car-headlight-beam {
+  animation: headlightPulse 2.2s ease-in-out infinite;
+}
+
+.car-city-pillar {
+  animation: cityLightPass 2.6s linear infinite;
+}
+
+.car-city-pillar-delayed {
+  animation: cityLightPass 2.6s linear infinite;
+  animation-delay: 1.3s;
+}
+
+/* =========================================================================
+   GLOBAL DARK MODE THEME OVERRIDES (html.dark)
+   Applies cohesive dark slate surfaces across Customer & Admin Portals
+   ========================================================================= */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0b1120;
+  color: #f1f5f9;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Page & container backgrounds */
+html.dark .bg-slate-50 {
+  background-color: #0b1120 !important;
+}
+html.dark .bg-slate-100 {
+  background-color: #111827 !important;
+}
+html.dark .bg-slate-200 {
+  background-color: #1e293b !important;
+}
+
+/* Elevated Cards, Headers, Tables & Modals */
+html.dark .bg-white {
+  background-color: #151f32 !important;
+}
+html.dark .bg-white\/95,
+html.dark .bg-white\/90,
+html.dark .bg-white\/80 {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+}
+
+/* Typography Contrast */
+html.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+html.dark .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+/* Borders & Dividers */
+html.dark .border-slate-100 {
+  border-color: #1e293b !important;
+}
+html.dark .border-slate-200 {
+  border-color: #26354d !important;
+}
+html.dark .border-slate-300 {
+  border-color: #334155 !important;
+}
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1e293b !important;
+}
+
+/* Hover States */
+html.dark .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #26354d !important;
+}
+html.dark .hover\:bg-slate-200:hover {
+  background-color: #334155 !important;
+}
+html.dark .hover\:text-slate-900:hover {
+  color: #ffffff !important;
+}
+
+/* Soft Tinted Accent Surfaces in Dark Mode */
+html.dark .bg-indigo-50,
+html.dark .bg-indigo-50\/70,
+html.dark .bg-indigo-50\/60 {
+  background-color: rgba(79, 70, 229, 0.16) !important;
+}
+html.dark .text-indigo-950,
+html.dark .text-indigo-900,
+html.dark .text-indigo-800,
+html.dark .text-indigo-700 {
+  color: #a5b4fc !important;
+}
+html.dark .border-indigo-100,
+html.dark .border-indigo-200 {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+html.dark .bg-emerald-50,
+html.dark .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+}
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+html.dark .border-emerald-200,
+html.dark .border-emerald-300 {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-amber-50\/80,
+html.dark .bg-amber-50\/70,
+html.dark .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+html.dark .text-amber-950,
+html.dark .text-amber-900,
+html.dark .text-amber-800,
+html.dark .text-amber-700 {
+  color: #fcd34d !important;
+}
+html.dark .border-amber-200,
+html.dark .border-amber-300 {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+html.dark .bg-rose-50,
+html.dark .bg-rose-100 {
+  background-color: rgba(244, 63, 94, 0.16) !important;
+}
+html.dark .text-rose-900,
+html.dark .text-rose-800,
+html.dark .text-rose-700 {
+  color: #fda4af !important;
+}
+html.dark .border-rose-200 {
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+html.dark .bg-violet-50,
+html.dark .bg-violet-100 {
+  background-color: rgba(139, 92, 246, 0.16) !important;
+}
+html.dark .text-violet-950,
+html.dark .text-violet-900,
+html.dark .text-violet-800,
+html.dark .text-violet-700 {
+  color: #c4b5fd !important;
+}
+html.dark .border-violet-200 {
+  border-color: rgba(139, 92, 246, 0.35) !important;
+}
+
+html.dark .bg-blue-50,
+html.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.18) !important;
+}
+html.dark .text-blue-800,
+html.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+html.dark .border-blue-200 {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+/* Form Inputs, Selects & Textareas in Dark Mode */
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
