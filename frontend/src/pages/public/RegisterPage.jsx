@@ -64,27 +64,69 @@ export default function RegisterPage() {
     }
   };
 
+  const handleFillNewTestCustomer = () => {
+    const randomId = Math.floor(1000 + Math.random() * 9000);
+    setForm({
+      name: `Customer Demo ${randomId}`,
+      email: `customer_${randomId}@example.com`,
+      phone: `+91-98${Math.floor(10000000 + Math.random() * 90000000)}`,
+      password: 'password123',
+      confirmPassword: 'password123',
+      preferred_vehicle_type: 'SUV',
+      preferred_transmission: 'Automatic',
+      preferred_fuel: 'Petrol',
+      preferred_seats: 5,
+      budget_per_day: 3500,
+    });
+    setError('');
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow">
-            <Car className="w-6 h-6" />
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 space-y-6 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow">
+              <Car className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                Create Customer Account
+              </h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Set your account details and AI vehicle preferences
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">
-              Create Customer Account
-            </h1>
-            <p className="text-xs text-slate-500">
-              Set your account details and AI vehicle preferences
-            </p>
-          </div>
+
+          <button
+            type="button"
+            onClick={handleFillNewTestCustomer}
+            className="px-3.5 py-1.5 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 text-xs font-semibold hover:bg-indigo-100 transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+            title="Click to auto-generate a fresh, unique demo customer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Generate New Test Email</span>
+          </button>
         </div>
 
         {error && (
-          <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
+          <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-semibold space-y-2">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+            {error.toLowerCase().includes('already exists') && (
+              <div className="pt-1 border-t border-rose-200/60 dark:border-rose-800/60 flex items-center justify-between">
+                <span>Did you already register this email before?</span>
+                <Link
+                  to="/login"
+                  className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+                >
+                  Sign In to Your Account &rarr;
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

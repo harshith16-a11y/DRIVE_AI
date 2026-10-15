@@ -63,10 +63,67 @@ def register_customer(payload: RegisterRequest, db: Session = Depends(get_db)):
 
     existing = db.query(User).filter(User.email == email_clean).first()
     if existing:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="An account with this email already exists.",
-        )
+        if existing.role == "ADMIN":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="This email is reserved for system administrators. Please sign in via the Admin Login page.",
+            )
+
+        # Existing customer account: update name, phone, password and preferences, then sign in seamlessly
+        try:
+            existing.name = payload.name.strip()
+            existing.phone = payload.phone.strip()
+            existing.password_hash = hash_password(payload.password)
+            existing.is_active = True
+
+            customer = db.query(Customer).filter(Customer.user_id == existing.id).first()
+            if customer:
+                customer.preferred_vehicle_type = payload.preferred_vehicle_type
+                customer.preferred_transmission = payload.preferred_transmission
+                customer.preferred_fuel = payload.preferred_fuel
+                customer.preferred_seats = payload.preferred_seats
+                customer.budget_per_day = Decimal(str(payload.budget_per_day))
+            else:
+                customer = Customer(
+                    user_id=existing.id,
+                    preferred_vehicle_type=payload.preferred_vehicle_type,
+                    preferred_transmission=payload.preferred_transmission,
+                    preferred_fuel=payload.preferred_fuel,
+                    preferred_seats=payload.preferred_seats,
+                    budget_per_day=Decimal(str(payload.budget_per_day)),
+                )
+                db.add(customer)
+
+            welcome_notif = Notification(
+                user_id=existing.id,
+                type="WELCOME",
+                title="Account Reconnected & Preferences Updated",
+                message=(
+                    f"Welcome back {existing.name}! Your account preferences and AI vehicle "
+                    f"recommendations have been updated successfully."
+                ),
+                is_read=False,
+            )
+            db.add(welcome_notif)
+            db.commit()
+            db.refresh(existing)
+            db.refresh(customer)
+
+            generate_recommendations_for_customer(db, customer.id, persist=True)
+
+            token = create_access_token(
+                {"sub": str(existing.id), "email": existing.email, "role": existing.role}
+            )
+            return AuthResponse(access_token=token, user=_serialize_user(existing))
+        except HTTPException:
+            db.rollback()
+            raise
+        except Exception as exc:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Registration update failed: {str(exc)}",
+            )
 
     try:
         new_user = User(
